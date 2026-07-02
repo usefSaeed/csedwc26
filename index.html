@@ -100,6 +100,20 @@ background: transparent; color: var(–muted); font-family: ‘Oswald’, sans-s
 font-size: 0.82rem; cursor: pointer; transition: all 0.2s; font-weight: 500; letter-spacing: 0.5px;
 }
 .participant-btn.active { color: #fff; }
+.participant-selector-sticky {
+position: sticky;
+top: 114px;
+z-index: 80;
+background: var(–bg);
+padding: 12px 0 14px;
+margin-bottom: 0;
+border-bottom: 1px solid var(–border);
+margin-left: -16px;
+margin-right: -16px;
+padding-left: 16px;
+padding-right: 16px;
+}
+.pred-grid-wrap { margin-top: 20px; }
 .pred-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
 .pred-card { background: var(–card); border: 1px solid var(–border); border-radius: 12px; padding: 16px; }
 .pred-match-label { font-size: 0.63rem; color: var(–muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
@@ -201,8 +215,10 @@ font-weight: 700; text-align: center; outline: none; transition: border-color 0.
 
   <div class="page" id="page-predictions">
     <div class="section-title">🔮 Predictions</div>
-    <div class="participant-selector" id="participant-selector"></div>
-    <div id="pred-container" class="pred-grid"></div>
+    <div class="participant-selector-sticky">
+      <div class="participant-selector" id="participant-selector"></div>
+    </div>
+    <div id="pred-container" class="pred-grid pred-grid-wrap"></div>
   </div>
 
   <div class="page" id="page-admin">
@@ -510,8 +526,21 @@ function renderLeaderboard() {
   }).join('');
 }
 
+// Returns MATCHES circularly shifted so the first unsaved match is at index 0.
+// Saved matches rotate to the end in their original relative order.
+function sortedMatches() {
+  const unsaved = MATCHES.filter(m => !actuals[m.id] || actuals[m.id].g1 === undefined);
+  const saved   = MATCHES.filter(m =>  actuals[m.id] && actuals[m.id].g1 !== undefined);
+  // If all saved or all unsaved, original order is fine
+  if (unsaved.length === 0 || saved.length === 0) return MATCHES;
+  // Find the index of the first unsaved match in original order
+  const firstUnsavedIdx = MATCHES.indexOf(unsaved[0]);
+  // Circular shift: everything from firstUnsavedIdx onward, then what came before
+  return [...MATCHES.slice(firstUnsavedIdx), ...MATCHES.slice(0, firstUnsavedIdx)];
+}
+
 function renderMatches() {
-  document.getElementById('matches-container').innerHTML = MATCHES.map(m => {
+  document.getElementById('matches-container').innerHTML = sortedMatches().map(m => {
     const act = actuals[m.id];
     const has = act && act.g1 !== undefined;
     return `
@@ -553,7 +582,9 @@ function renderParticipantSelector() {
 function renderPredictions() {
   renderParticipantSelector();
   const p = PARTICIPANTS.find(x => x.id === selectedPid);
-  document.getElementById('pred-container').innerHTML = (PREDICTIONS[selectedPid] || []).map(pred => {
+  const sorted = sortedMatches();
+  const sortedPreds = sorted.map(m => (PREDICTIONS[selectedPid] || []).find(p => p.mid === m.id)).filter(Boolean);
+  document.getElementById('pred-container').innerHTML = sortedPreds.map(pred => {
     const m   = MATCHES.find(x => x.id === pred.mid);
     const pts = matchPoints(selectedPid, pred.mid);
     let badge = '';
@@ -580,7 +611,7 @@ function renderPredictions() {
 }
 
 function renderAdmin() {
-  document.getElementById('admin-container').innerHTML = MATCHES.map(m => {
+  document.getElementById('admin-container').innerHTML = sortedMatches().map(m => {
     const act = actuals[m.id] || {};
     return `
       <div class="admin-match-card">
