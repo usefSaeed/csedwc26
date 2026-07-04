@@ -679,11 +679,16 @@ function matchPoints(pid, mid) {
 }
 
 // ─── RENDER ───────────────────────────────────────────────────────────────────
+function showError(containerId, err) {
+  const el = document.getElementById(containerId);
+  if (el) el.innerHTML = '<div style="color:#ff6b6b;background:rgba(255,0,0,0.1);border:1px solid rgba(255,0,0,0.3);border-radius:10px;padding:16px;font-family:monospace;font-size:0.8rem;white-space:pre-wrap;">❌ Error: ' + err.message + '\n\n' + (err.stack || '') + '</div>';
+}
+
 function renderAll() {
-  renderLeaderboard();
-  renderMatches();
-  renderPredictions();
-  renderAdmin();
+  try { renderLeaderboard(); } catch(e) { showError('lb-container', e); }
+  try { renderMatches(); }     catch(e) { showError('matches-container', e); }
+  try { renderPredictions(); } catch(e) { showError('pred-container', e); }
+  try { renderAdmin(); }       catch(e) { showError('admin-container', e); }
 }
 
 function renderLeaderboard() {
