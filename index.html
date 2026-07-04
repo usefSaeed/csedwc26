@@ -100,20 +100,8 @@ background: transparent; color: var(–muted); font-family: ‘Oswald’, sans-s
 font-size: 0.82rem; cursor: pointer; transition: all 0.2s; font-weight: 500; letter-spacing: 0.5px;
 }
 .participant-btn.active { color: #fff; }
-.participant-selector-sticky {
-position: sticky;
-top: 114px;
-z-index: 80;
-background: var(–bg);
-padding: 12px 0 14px;
-margin-bottom: 0;
-border-bottom: 1px solid var(–border);
-margin-left: -16px;
-margin-right: -16px;
-padding-left: 16px;
-padding-right: 16px;
-}
 .pred-grid-wrap { margin-top: 20px; }
+#pred-sticky-bar .participant-selector { margin-bottom: 0; }
 .pred-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
 .pred-card { background: var(–card); border: 1px solid var(–border); border-radius: 12px; padding: 16px; }
 .pred-match-label { font-size: 0.63rem; color: var(–muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
@@ -161,6 +149,22 @@ font-weight: 700; text-align: center; outline: none; transition: border-color 0.
 .reset-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 .admin-actions { display: flex; gap: 8px; align-items: center; }
 
+.round-header {
+font-family: ‘Oswald’, sans-serif; font-size: 1.1rem; font-weight: 600;
+color: var(–gold); letter-spacing: 1px; padding: 8px 4px 4px;
+border-bottom: 1px solid var(–border); margin-bottom: 4px;
+grid-column: 1 / -1;
+}
+.lb-toggle-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.toggle-btn {
+padding: 8px 20px; border-radius: 99px; border: 2px solid var(–border);
+background: transparent; color: var(–muted); font-family: ‘Oswald’, sans-serif;
+font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; cursor: pointer;
+transition: all 0.2s; text-transform: uppercase;
+}
+.toggle-btn.active { background: var(–gold); color: #000; border-color: var(–gold); }
+.toggle-label { font-size: 0.75rem; color: var(–muted); }
+
 .loading { display: flex; align-items: center; justify-content: center; padding: 60px; gap: 12px; color: var(–muted); }
 .spinner { width: 22px; height: 22px; border: 3px solid var(–border); border-top-color: var(–green); border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -198,9 +202,16 @@ font-weight: 700; text-align: center; outline: none; transition: border-color 0.
   </div>
 </nav>
 
+<div id="pred-sticky-bar" style="display:none; position:sticky; top:114px; z-index:80; background:var(--bg); border-bottom:1px solid var(--border); padding:12px 16px 14px;">
+  <div class="participant-selector" id="participant-selector"></div>
+</div>
 <main>
   <div class="page active" id="page-leaderboard">
     <div class="section-title">🏆 Leaderboard</div>
+    <div class="lb-toggle-wrap">
+      <button class="toggle-btn" id="r16-toggle" onclick="toggleR16()">⚡ R16</button>
+      <span class="toggle-label" id="toggle-label">Showing: All rounds combined</span>
+    </div>
     <div id="lb-container" class="leaderboard-list">
       <div class="loading"><div class="spinner"></div> Loading…</div>
     </div>
@@ -215,9 +226,6 @@ font-weight: 700; text-align: center; outline: none; transition: border-color 0.
 
   <div class="page" id="page-predictions">
     <div class="section-title">🔮 Predictions</div>
-    <div class="participant-selector-sticky">
-      <div class="participant-selector" id="participant-selector"></div>
-    </div>
     <div id="pred-container" class="pred-grid pred-grid-wrap"></div>
   </div>
 
@@ -262,6 +270,13 @@ const PARTICIPANTS = [
   { id: 'salama',  name: 'Salaama',        sub: 'Mohamed Salama',initials: 'SA', color: '#66bb6a' },
   { id: 'mento',   name: 'عمدة (Mento)',   sub: 'Omar Mento',    initials: 'ME', color: '#d4e157' },
   { id: 'safa',    name: 'صفا',            sub: 'Safa',          initials: 'SF', color: '#f06292' },
+  { id: 'deffo',   name: 'Deffo',          sub: 'Deffo',         initials: 'DF', color: '#4dd0e1' },
+  { id: 'bazina',  name: 'Bazina',         sub: 'Bazina',        initials: 'BZ', color: '#aed581' },
+  { id: 'ibbo',    name: 'Ibbo',           sub: 'Ibbo',          initials: 'IB', color: '#ff8a65' },
+  { id: 'amo3',    name: '3amo',           sub: '3amo',          initials: '3M', color: '#90caf9' },
+  { id: 'aboeleid',name: 'ابوالعيد',       sub: 'Aboeleid',      initials: 'AE', color: '#ce93d8' },
+  { id: 'farrag',  name: 'Farrag',         sub: 'Farrag',        initials: 'FR', color: '#80cbc4' },
+  { id: 'joe',     name: 'عم الچو',        sub: 'Joe',           initials: 'JO', color: '#29b6f6' },
 ];
 
 // ─── MATCHES (m05–m16 only) ───────────────────────────────────────────────────
@@ -278,6 +293,14 @@ const MATCHES = [
   { id: 'f14', t1: '🇦🇺', n1: 'Australia',      t2: '🇪🇬', n2: 'Egypt',       time: 'Jul 2  · 21:00' },
   { id: 'f15', t1: '🇦🇷', n1: 'Argentina',      t2: '🇨🇻', n2: 'Cabo Verde',  time: 'Jul 3  · 15:00' },
   { id: 'f16', t1: '🇨🇴', n1: 'Colombia',       t2: '🇬🇭', n2: 'Ghana',       time: 'Jul 3  · 18:00' },
+  { id: 'r01', t1: '🇨🇦', n1: 'Canada',       t2: '🇲🇦', n2: 'Morocco',        time: 'Jul 4  · FT',    round: 'R16' },
+  { id: 'r02', t1: '🇵🇾', n1: 'Paraguay',     t2: '🇫🇷', n2: 'France',         time: 'Jul 5  · 00:00', round: 'R16' },
+  { id: 'r03', t1: '🇧🇷', n1: 'Brazil',       t2: '🇳🇴', n2: 'Norway',         time: 'Jul 5  · 23:00', round: 'R16' },
+  { id: 'r04', t1: '🇲🇽', n1: 'Mexico',       t2: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', n2: 'England',        time: 'Jul 6  · 03:00', round: 'R16' },
+  { id: 'r05', t1: '🇵🇹', n1: 'Portugal',     t2: '🇪🇸', n2: 'Spain',          time: 'Jul 6  · 22:00', round: 'R16' },
+  { id: 'r06', t1: '🇺🇸', n1: 'USA',          t2: '🇧🇪', n2: 'Belgium',        time: 'Jul 7  · 03:00', round: 'R16' },
+  { id: 'r07', t1: '🇦🇷', n1: 'Argentina',    t2: '🇪🇬', n2: 'Egypt',          time: 'Jul 7  · 19:00', round: 'R16' },
+  { id: 'r08', t1: '🇨🇭', n1: 'Switzerland',  t2: '🇨🇴', n2: 'Colombia',       time: 'Jul 7  · 23:00', round: 'R16' },
 ];
 
 // ─── PREDICTIONS ──────────────────────────────────────────────────────────────
@@ -309,7 +332,15 @@ const PREDICTIONS = {
     { mid:'f13', g1:1,  g2:1, w:'Switzerland' },
     { mid:'f14', g1:1,  g2:2, w:'Egypt'       },
     { mid:'f15', g1:2,  g2:0, w:'Argentina'   },
-    { mid:'f16', g1:0,  g2:0, w:'Ghana'       },
+    { mid:'f16', g1:0,  g2:0, w:'Ghana'       },,
+    { mid:'r01', g1:1, g2:2, w:'Morocco' },
+    { mid:'r02', g1:0, g2:3, w:'France' },
+    { mid:'r03', g1:2, g2:1, w:'Brazil' },
+    { mid:'r04', g1:1, g2:2, w:'England' },
+    { mid:'r05', g1:1, g2:2, w:'Spain' },
+    { mid:'r06', g1:2, g2:1, w:'USA' },
+    { mid:'r07', g1:1, g2:2, w:'Egypt' },
+    { mid:'r08', g1:1, g2:2, w:'Colombia' }
   ],
   loulou: [
     { mid:'f05', g1:2,  g2:3, w:'Norway'      },
@@ -323,7 +354,15 @@ const PREDICTIONS = {
     { mid:'f13', g1:2,  g2:1, w:'Switzerland' },
     { mid:'f14', g1:1,  g2:2, w:'Egypt'       },
     { mid:'f15', g1:3,  g2:1, w:'Argentina'   },
-    { mid:'f16', g1:1,  g2:0, w:'Colombia'    },
+    { mid:'f16', g1:1,  g2:0, w:'Colombia'    },,
+    { mid:'r01', g1:0, g2:2, w:'Morocco' },
+    { mid:'r02', g1:0, g2:3, w:'France' },
+    { mid:'r03', g1:2, g2:1, w:'Brazil' },
+    { mid:'r04', g1:1, g2:2, w:'England' },
+    { mid:'r05', g1:1, g2:3, w:'Spain' },
+    { mid:'r06', g1:2, g2:1, w:'USA' },
+    { mid:'r07', g1:1, g2:1, w:'Egypt' },
+    { mid:'r08', g1:2, g2:2, w:'Switzerland' }
   ],
   ziad: [
     { mid:'f05', g1:1,  g2:2, w:'Norway'      },
@@ -337,7 +376,15 @@ const PREDICTIONS = {
     { mid:'f13', g1:2,  g2:1, w:'Switzerland' },
     { mid:'f14', g1:0,  g2:1, w:'Egypt'       },
     { mid:'f15', g1:3,  g2:0, w:'Argentina'   },
-    { mid:'f16', g1:0,  g2:1, w:'Ghana'       },
+    { mid:'f16', g1:0,  g2:1, w:'Ghana'       },,
+    { mid:'r01', g1:1, g2:2, w:'Morocco' },
+    { mid:'r02', g1:1, g2:3, w:'France' },
+    { mid:'r03', g1:2, g2:0, w:'Brazil' },
+    { mid:'r04', g1:1, g2:2, w:'England' },
+    { mid:'r05', g1:1, g2:3, w:'Spain' },
+    { mid:'r06', g1:1, g2:1, w:'Belgium' },
+    { mid:'r07', g1:3, g2:0, w:'Argentina' },
+    { mid:'r08', g1:2, g2:1, w:'Switzerland' }
   ],
   michael: [
     { mid:'f05', g1:1,  g2:3, w:'Norway'      },
@@ -351,7 +398,15 @@ const PREDICTIONS = {
     { mid:'f13', g1:2,  g2:1, w:'Switzerland' },
     { mid:'f14', g1:1,  g2:2, w:'Egypt'       },
     { mid:'f15', g1:3,  g2:0, w:'Argentina'   },
-    { mid:'f16', g1:1,  g2:0, w:'Colombia'    },
+    { mid:'f16', g1:1,  g2:0, w:'Colombia'    },,
+    { mid:'r01', g1:1, g2:2, w:'Morocco' },
+    { mid:'r02', g1:0, g2:2, w:'France' },
+    { mid:'r03', g1:1, g2:2, w:'Norway' },
+    { mid:'r04', g1:1, g2:1, w:'England' },
+    { mid:'r05', g1:1, g2:3, w:'Spain' },
+    { mid:'r06', g1:2, g2:2, w:'Belgium' },
+    { mid:'r07', g1:3, g2:1, w:'Argentina' },
+    { mid:'r08', g1:0, g2:1, w:'Colombia' }
   ],
   tony: [
     { mid:'f05', g1:1,  g2:2, w:'Norway'      },
@@ -365,7 +420,15 @@ const PREDICTIONS = {
     { mid:'f13', g1:1,  g2:0, w:'Switzerland' },
     { mid:'f14', g1:2,  g2:2, w:'Egypt'       },
     { mid:'f15', g1:4,  g2:0, w:'Argentina'   },
-    { mid:'f16', g1:0,  g2:0, w:'Colombia'    },
+    { mid:'f16', g1:0,  g2:0, w:'Colombia'    },,
+    { mid:'r01', g1:0, g2:1, w:'Morocco' },
+    { mid:'r02', g1:0, g2:4, w:'France' },
+    { mid:'r03', g1:1, g2:2, w:'Norway' },
+    { mid:'r04', g1:1, g2:1, w:'England' },
+    { mid:'r05', g1:2, g2:2, w:'Spain' },
+    { mid:'r06', g1:2, g2:1, w:'USA' },
+    { mid:'r07', g1:1, g2:1, w:'Egypt' },
+    { mid:'r08', g1:0, g2:0, w:'Switzerland' }
   ],
   momen: [
     { mid:'f05', g1:1,  g2:2, w:'Norway'      },
@@ -379,7 +442,15 @@ const PREDICTIONS = {
     { mid:'f13', g1:2,  g2:0, w:'Switzerland' },
     { mid:'f14', g1:0,  g2:2, w:'Egypt'       },
     { mid:'f15', g1:3,  g2:0, w:'Argentina'   },
-    { mid:'f16', g1:1,  g2:0, w:'Colombia'    },
+    { mid:'f16', g1:1,  g2:0, w:'Colombia'    },,
+    { mid:'r01', g1:1, g2:2, w:'Morocco' },
+    { mid:'r02', g1:0, g2:2, w:'France' },
+    { mid:'r03', g1:3, g2:1, w:'Brazil' },
+    { mid:'r04', g1:2, g2:2, w:'England' },
+    { mid:'r05', g1:2, g2:2, w:'Portugal' },
+    { mid:'r06', g1:2, g2:1, w:'USA' },
+    { mid:'r07', g1:0, g2:1, w:'Egypt' },
+    { mid:'r08', g1:1, g2:0, w:'Switzerland' }
   ],
   kotb: [
     { mid:'f05', g1:2,  g2:3, w:'Norway'      },
@@ -393,7 +464,15 @@ const PREDICTIONS = {
     { mid:'f13', g1:1,  g2:1, w:'Switzerland' },
     { mid:'f14', g1:1,  g2:1, w:'Egypt'       },
     { mid:'f15', g1:4,  g2:0, w:'Argentina'   },
-    { mid:'f16', g1:0,  g2:1, w:'Ghana'       },
+    { mid:'f16', g1:0,  g2:1, w:'Ghana'       },,
+    { mid:'r01', g1:1, g2:2, w:'Morocco' },
+    { mid:'r02', g1:1, g2:3, w:'France' },
+    { mid:'r03', g1:1, g2:2, w:'Norway' },
+    { mid:'r04', g1:2, g2:2, w:'Mexico' },
+    { mid:'r05', g1:1, g2:3, w:'Spain' },
+    { mid:'r06', g1:2, g2:1, w:'USA' },
+    { mid:'r07', g1:1, g2:1, w:'Egypt' },
+    { mid:'r08', g1:1, g2:1, w:'Colombia' }
   ],
   mo: [
     { mid:'f05', g1:2,  g2:2, w:"Côte d'Ivoire"},
@@ -407,7 +486,15 @@ const PREDICTIONS = {
     { mid:'f13', g1:2,  g2:2, w:'Switzerland' },
     { mid:'f14', g1:1,  g2:2, w:'Egypt'       },
     { mid:'f15', g1:3,  g2:0, w:'Argentina'   },
-    { mid:'f16', g1:1,  g2:0, w:'Colombia'    },
+    { mid:'f16', g1:1,  g2:0, w:'Colombia'    },,
+    { mid:'r01', g1:0, g2:2, w:'Morocco' },
+    { mid:'r02', g1:1, g2:2, w:'France' },
+    { mid:'r03', g1:2, g2:2, w:'Brazil' },
+    { mid:'r04', g1:1, g2:2, w:'England' },
+    { mid:'r05', g1:1, g2:1, w:'Portugal' },
+    { mid:'r06', g1:2, g2:2, w:'USA' },
+    { mid:'r07', g1:1, g2:1, w:'Egypt' },
+    { mid:'r08', g1:1, g2:2, w:'Colombia' }
   ],
   salama: [
     { mid:'f05', g1:1,  g2:2, w:'Norway'      },
@@ -421,7 +508,15 @@ const PREDICTIONS = {
     { mid:'f13', g1:2,  g2:1, w:'Switzerland' },
     { mid:'f14', g1:0,  g2:1, w:'Egypt'       },
     { mid:'f15', g1:3,  g2:1, w:'Argentina'   },
-    { mid:'f16', g1:1,  g2:1, w:'Ghana'       },
+    { mid:'f16', g1:1,  g2:1, w:'Ghana'       },,
+    { mid:'r01', g1:0, g2:2, w:'Morocco' },
+    { mid:'r02', g1:1, g2:2, w:'France' },
+    { mid:'r03', g1:2, g2:2, w:'Brazil' },
+    { mid:'r04', g1:1, g2:2, w:'England' },
+    { mid:'r05', g1:0, g2:2, w:'Spain' },
+    { mid:'r06', g1:1, g2:2, w:'Belgium' },
+    { mid:'r07', g1:3, g2:1, w:'Argentina' },
+    { mid:'r08', g1:2, g2:1, w:'Switzerland' }
   ],
   mento: [
     { mid:'f05', g1:1,  g2:3, w:'Norway'      },
@@ -435,7 +530,15 @@ const PREDICTIONS = {
     { mid:'f13', g1:1,  g2:0, w:'Switzerland' },
     { mid:'f14', g1:1,  g2:1, w:'Egypt'       },
     { mid:'f15', g1:4,  g2:0, w:'Argentina'   },
-    { mid:'f16', g1:3,  g2:1, w:'Colombia'    },
+    { mid:'f16', g1:3,  g2:1, w:'Colombia'    },,
+    { mid:'r01', g1:1, g2:2, w:'Morocco' },
+    { mid:'r02', g1:0, g2:2, w:'France' },
+    { mid:'r03', g1:1, g2:1, w:'Brazil' },
+    { mid:'r04', g1:1, g2:2, w:'England' },
+    { mid:'r05', g1:0, g2:1, w:'Spain' },
+    { mid:'r06', g1:3, g2:1, w:'USA' },
+    { mid:'r07', g1:1, g2:0, w:'Argentina' },
+    { mid:'r08', g1:1, g2:2, w:'Colombia' }
   ],
   safa: [
     { mid:'f05', g1:1,  g2:2, w:'Norway'      },
@@ -449,13 +552,92 @@ const PREDICTIONS = {
     { mid:'f13', g1:1,  g2:2, w:'Algeria'     },
     { mid:'f14', g1:0,  g2:2, w:'Egypt'       },
     { mid:'f15', g1:4,  g2:1, w:'Argentina'   },
-    { mid:'f16', g1:1,  g2:1, w:'Colombia'    },
+    { mid:'f16', g1:1,  g2:1, w:'Colombia'    },,
+    { mid:'r01', g1:1, g2:3, w:'Morocco' },
+    { mid:'r02', g1:2, g2:3, w:'France' },
+    { mid:'r03', g1:2, g2:2, w:'Norway' },
+    { mid:'r04', g1:1, g2:2, w:'England' },
+    { mid:'r05', g1:1, g2:2, w:'Spain' },
+    { mid:'r06', g1:1, g2:2, w:'Belgium' },
+    { mid:'r07', g1:3, g2:1, w:'Argentina' },
+    { mid:'r08', g1:1, g2:2, w:'Colombia' }
+  ],
+  deffo: [
+    { mid:'r01', g1:0, g2:2, w:'Morocco' },
+    { mid:'r02', g1:1, g2:3, w:'France' },
+    { mid:'r03', g1:2, g2:1, w:'Brazil' },
+    { mid:'r04', g1:2, g2:1, w:'Mexico' },
+    { mid:'r05', g1:2, g2:1, w:'Portugal' },
+    { mid:'r06', g1:2, g2:1, w:'USA' },
+    { mid:'r07', g1:2, g2:3, w:'Egypt' },
+    { mid:'r08', g1:1, g2:2, w:'Colombia' },
+  ],
+  bazina: [
+    { mid:'r01', g1:0, g2:2, w:'Morocco' },
+    { mid:'r02', g1:0, g2:3, w:'France' },
+    { mid:'r03', g1:3, g2:2, w:'Brazil' },
+    { mid:'r04', g1:2, g2:1, w:'Mexico' },
+    { mid:'r05', g1:2, g2:4, w:'Spain' },
+    { mid:'r06', g1:1, g2:1, w:'Belgium' },
+    { mid:'r07', g1:2, g2:2, w:'Egypt' },
+    { mid:'r08', g1:0, g2:1, w:'Colombia' },
+  ],
+  ibbo: [
+    { mid:'r01', g1:0, g2:1, w:'Morocco' },
+    { mid:'r02', g1:0, g2:3, w:'France' },
+    { mid:'r03', g1:2, g2:1, w:'Brazil' },
+    { mid:'r04', g1:0, g2:2, w:'England' },
+    { mid:'r05', g1:1, g2:3, w:'Spain' },
+    { mid:'r06', g1:1, g2:1, w:'Belgium' },
+    { mid:'r07', g1:2, g2:1, w:'Argentina' },
+    { mid:'r08', g1:0, g2:1, w:'Colombia' },
+  ],
+  amo3: [
+    { mid:'r01', g1:1, g2:2, w:'Morocco' },
+    { mid:'r02', g1:0, g2:2, w:'France' },
+    { mid:'r03', g1:1, g2:1, w:'Norway' },
+    { mid:'r04', g1:1, g2:2, w:'England' },
+    { mid:'r05', g1:2, g2:1, w:'Portugal' },
+    { mid:'r06', g1:1, g2:0, w:'USA' },
+    { mid:'r07', g1:2, g2:1, w:'Argentina' },
+    { mid:'r08', g1:0, g2:2, w:'Colombia' },
+  ],
+  aboeleid: [
+    { mid:'r01', g1:2, g2:2, w:'Morocco' },
+    { mid:'r02', g1:1, g2:3, w:'France' },
+    { mid:'r03', g1:3, g2:2, w:'Brazil' },
+    { mid:'r04', g1:1, g2:0, w:'Mexico' },
+    { mid:'r05', g1:1, g2:2, w:'Spain' },
+    { mid:'r06', g1:2, g2:2, w:'USA' },
+    { mid:'r07', g1:1, g2:2, w:'Egypt' },
+    { mid:'r08', g1:1, g2:1, w:'Switzerland' },
+  ],
+  farrag: [
+    { mid:'r01', g1:1, g2:2, w:'Morocco' },
+    { mid:'r02', g1:0, g2:3, w:'France' },
+    { mid:'r03', g1:3, g2:1, w:'Brazil' },
+    { mid:'r04', g1:1, g2:2, w:'England' },
+    { mid:'r05', g1:0, g2:2, w:'Spain' },
+    { mid:'r06', g1:2, g2:1, w:'USA' },
+    { mid:'r07', g1:3, g2:1, w:'Argentina' },
+    { mid:'r08', g1:0, g2:1, w:'Colombia' },
+  ],
+  joe: [
+    { mid:'r01', g1:1, g2:3, w:'Morocco' },
+    { mid:'r02', g1:0, g2:2, w:'France' },
+    { mid:'r03', g1:3, g2:2, w:'Brazil' },
+    { mid:'r04', g1:3, g2:2, w:'Mexico' },
+    { mid:'r05', g1:1, g2:2, w:'Spain' },
+    { mid:'r06', g1:2, g2:2, w:'USA' },
+    { mid:'r07', g1:2, g2:2, w:'Egypt' },
+    { mid:'r08', g1:2, g2:1, w:'Switzerland' },
   ],
 };
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 let actuals = {};
 let selectedPid = 'joe';
+let r16Only = false;
 
 const actualsRef = ref(db, 'csed_actuals');
 onValue(actualsRef, snap => {
@@ -464,15 +646,26 @@ onValue(actualsRef, snap => {
 });
 
 // ─── SCORING ─────────────────────────────────────────────────────────────────
-function calcPoints(pid) {
+function calcPoints(pid, onlyR16 = false) {
   let goals = 0, winner = 0;
   for (const pred of (PREDICTIONS[pid] || [])) {
+    if (onlyR16 && !pred.mid.startsWith('r')) continue;
+    if (!onlyR16 && pred.mid.startsWith('r') === false) {} // include all
     const act = actuals[pred.mid];
     if (!act || act.g1 === undefined) continue;
     if (act.g1 === pred.g1 && act.g2 === pred.g2) goals += 2;
     if (act.winner && act.winner === pred.w) winner += 1;
   }
   return { goals, winner, total: goals + winner };
+}
+
+function toggleR16() {
+  r16Only = !r16Only;
+  const btn = document.getElementById('r16-toggle');
+  const lbl = document.getElementById('toggle-label');
+  btn.classList.toggle('active', r16Only);
+  lbl.textContent = r16Only ? 'Showing: R16 only' : 'Showing: All rounds combined';
+  renderLeaderboard();
 }
 
 function matchPoints(pid, mid) {
@@ -494,10 +687,14 @@ function renderAll() {
 }
 
 function renderLeaderboard() {
-  const scored = PARTICIPANTS.map(p => ({ ...p, ...calcPoints(p.id) }))
+  const r16Mids = new Set(['r01','r02','r03','r04','r05','r06','r07','r08']);
+  const eligible = r16Only
+    ? PARTICIPANTS.filter(p => (PREDICTIONS[p.id] || []).some(pr => r16Mids.has(pr.mid)))
+    : PARTICIPANTS;
+  const scored = eligible.map(p => ({ ...p, ...calcPoints(p.id, r16Only) }))
     .sort((a, b) => b.total - a.total || b.goals - a.goals);
 
-  const maxPossible = MATCHES.length * 3;
+  const maxPossible = r16Only ? 8 * 3 : MATCHES.length * 3;
   const rankEmoji = ['🥇','🥈','🥉'];
   const rankCls   = ['r1','r2','r3'];
 
@@ -531,12 +728,9 @@ function renderLeaderboard() {
 function sortedMatches() {
   const unsaved = MATCHES.filter(m => !actuals[m.id] || actuals[m.id].g1 === undefined);
   const saved   = MATCHES.filter(m =>  actuals[m.id] && actuals[m.id].g1 !== undefined);
-  // If all saved or all unsaved, original order is fine
-  if (unsaved.length === 0 || saved.length === 0) return MATCHES;
-  // Find the index of the first unsaved match in original order
-  const firstUnsavedIdx = MATCHES.indexOf(unsaved[0]);
-  // Circular shift: everything from firstUnsavedIdx onward, then what came before
-  return [...MATCHES.slice(firstUnsavedIdx), ...MATCHES.slice(0, firstUnsavedIdx)];
+  // unsaved first (original relative order), saved at end (original relative order)
+  // when all saved or all unsaved, original order is preserved
+  return [...unsaved, ...saved];
 }
 
 function renderMatches() {
@@ -546,7 +740,7 @@ function renderMatches() {
     return `
       <div class="match-card">
         <div class="match-meta">
-          <span class="match-round">1/32 · R32</span>
+          <span class="match-round">${isR16 ? '1/16 · R16' : '1/32 · R32'}</span>
           <span class="match-time">🕐 ${m.time}</span>
         </div>
         <div class="match-teams">
@@ -617,7 +811,7 @@ function renderAdmin() {
       <div class="admin-match-card">
         <div class="admin-match-header">
           <div class="admin-match-title">
-            <span class="match-round">1/32</span>
+            <span class="match-round">${m.round === 'R16' ? '1/16' : '1/32'}</span>
             ${m.t1} ${m.n1} vs ${m.n2} ${m.t2}
           </div>
           <span class="match-time">🕐 ${m.time}</span>
@@ -681,6 +875,8 @@ document.querySelectorAll('.nav-tab').forEach(tab =>
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
     document.getElementById(`page-${tab.dataset.page}`).classList.add('active');
+    document.getElementById('pred-sticky-bar').style.display =
+      tab.dataset.page === 'predictions' ? 'block' : 'none';
   })
 );
 
