@@ -734,36 +734,43 @@ function sortedMatches() {
 }
 
 function renderMatches() {
-  document.getElementById('matches-container').innerHTML = sortedMatches().map(m => {
+  const sorted = sortedMatches();
+  let html = '';
+  let shownR16 = false, shownR32 = false;
+  for (const m of sorted) {
     const act = actuals[m.id];
     const has = act && act.g1 !== undefined;
-    return `
-      <div class="match-card">
-        <div class="match-meta">
-          <span class="match-round">${isR16 ? '1/16 · R16' : '1/32 · R32'}</span>
-          <span class="match-time">🕐 ${m.time}</span>
-        </div>
-        <div class="match-teams">
-          <div class="team"><div class="team-flag">${m.t1}</div><div class="team-name">${m.n1}</div></div>
-          <div class="actual-score">
-            <div class="score-box ${has?'score-set':''}">${has ? act.g1 : '–'}</div>
-            <div class="score-sep">vs</div>
-            <div class="score-box ${has?'score-set':''}">${has ? act.g2 : '–'}</div>
-          </div>
-          <div class="team"><div class="team-flag">${m.t2}</div><div class="team-name">${m.n2}</div></div>
-        </div>
-        ${has
-          ? `<div class="winner-chip">🚀 Advances: ${act.winner}</div>`
-          : `<div class="winner-chip" style="opacity:0.35">⏳ Awaiting result</div>`}
-      </div>`;
-  }).join('');
+    const isR16 = m.round === 'R16';
+    if (isR16 && !shownR16) {
+      html += '<div class="round-header">⚔️ Round of 16</div>';
+      shownR16 = true;
+    } else if (!isR16 && !shownR32) {
+      html += '<div class="round-header">🏟️ Round of 32</div>';
+      shownR32 = true;
+    }
+    html += '<div class="match-card">'
+      + '<div class="match-meta">'
+      + '<span class="match-round">' + (isR16 ? '1/16 · R16' : '1/32 · R32') + '</span>'
+      + '<span class="match-time">🕐 ' + m.time + '</span>'
+      + '</div>'
+      + '<div class="match-teams">'
+      + '<div class="team"><div class="team-flag">' + m.t1 + '</div><div class="team-name">' + m.n1 + '</div></div>'
+      + '<div class="actual-score">'
+      + '<div class="score-box ' + (has ? 'score-set' : '') + '">' + (has ? act.g1 : '–') + '</div>'
+      + '<div class="score-sep">vs</div>'
+      + '<div class="score-box ' + (has ? 'score-set' : '') + '">' + (has ? act.g2 : '–') + '</div>'
+      + '</div>'
+      + '<div class="team"><div class="team-flag">' + m.t2 + '</div><div class="team-name">' + m.n2 + '</div></div>'
+      + '</div>'
+      + (has ? '<div class="winner-chip">🚀 Advances: ' + act.winner + '</div>' : '<div class="winner-chip" style="opacity:0.35">⏳ Awaiting result</div>')
+      + '</div>';
+  }
+  document.getElementById('matches-container').innerHTML = html;
 }
 
 function renderParticipantSelector() {
   document.getElementById('participant-selector').innerHTML = PARTICIPANTS.map(p => `
-    <button class="participant-btn ${p.id===selectedPid?'active':''}"
-      style="${p.id===selectedPid ? `border-color:${p.color};color:${p.color};background:${p.color}15` : ''}"
-      data-pid="${p.id}">${p.name}</button>
+    <button class="participant-btn ${p.id===selectedPid?'active':''}" style="${p.id===selectedPid ? 'border-color:'+p.color+';color:'+p.color+';background:'+p.color+'15' : ''}" data-pid="${p.id}">${p.name}</button>
   `).join('');
   document.querySelectorAll('.participant-btn').forEach(btn =>
     btn.addEventListener('click', () => {
@@ -790,7 +797,7 @@ function renderPredictions() {
     }
     return `
       <div class="pred-card">
-        <div class="pred-match-label">1/32 · ${m.time}</div>
+        <div class="pred-match-label">${m.round === 'R16' ? '1/16 · R16' : '1/32 · R32'} · ${m.time}</div>
         <div class="pred-teams">
           <div class="pred-team"><div class="pred-flag">${m.t1}</div><div class="pred-name">${m.n1}</div></div>
           <div class="pred-score" style="color:${p.color}">${pred.g1}</div>
