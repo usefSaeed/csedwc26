@@ -28,8 +28,7 @@
   .section-title { font-family:'Oswald',sans-serif; font-size:1.5rem; font-weight:600; color:#fff; margin-bottom:24px; display:flex; align-items:center; gap:10px; }
   .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
 
-/* LEADERBOARD */
-.lb-toggle-wrap { display:flex; gap:8px; margin-bottom:22px; }
+.lb-toggle-wrap { display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap; }
 .lb-toggle-btn { padding:9px 20px; border-radius:99px; border:2px solid var(–border); background:transparent; color:var(–muted); font-family:‘Oswald’,sans-serif; font-size:.82rem; cursor:pointer; transition:all .2s; font-weight:600; letter-spacing:.5px; text-transform:uppercase; }
 .lb-toggle-btn.active { color:var(–green); border-color:var(–green); background:rgba(0,200,83,.1); }
 .leaderboard-list { display:flex; flex-direction:column; gap:12px; }
@@ -50,22 +49,22 @@
 .lb-badge { background:rgba(255,255,255,.06); border-radius:6px; padding:2px 8px; font-size:.68rem; color:var(–muted); }
 .lb-badge span { color:var(–text); font-weight:600; }
 
-/* MATCHES */
 .matches-subheader { font-family:‘Oswald’,sans-serif; font-size:1.05rem; font-weight:600; color:var(–green); margin:8px 0 14px; display:flex; align-items:center; gap:8px; text-transform:uppercase; letter-spacing:1px; }
-.matches-subheader.fin { color:var(–gold); }
-.match-round.fin { background:rgba(255,215,0,.12); color:var(–gold); border-color:rgba(255,215,0,.3); }
 .matches-subheader.sf { color:#ff3d7f; }
+.matches-subheader.final { color:var(–gold); }
 .matches-subheader.qf { color:#ff6b35; }
 .matches-subheader.r16 { color:var(–gold); }
 .matches-subheader::after { content:’’; flex:1; height:1px; background:var(–border); }
 .matches-group { margin-bottom:30px; }
 .matches-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px; }
 .match-card { background:var(–card); border:1px solid var(–border); border-radius:14px; padding:18px; }
+.match-card.final-card { border-color:var(–gold); box-shadow:0 0 30px rgba(255,215,0,.15); }
 .match-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
 .match-round { background:rgba(0,200,83,.12); color:var(–green); font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; padding:3px 9px; border-radius:99px; border:1px solid rgba(0,200,83,.25); }
 .match-round.r16 { background:rgba(255,215,0,.12); color:var(–gold); border-color:rgba(255,215,0,.3); }
 .match-round.sf { background:rgba(255,61,127,.12); color:#ff3d7f; border-color:rgba(255,61,127,.3); }
 .match-round.qf { background:rgba(255,107,53,.12); color:#ff6b35; border-color:rgba(255,107,53,.3); }
+.match-round.final { background:rgba(255,215,0,.18); color:var(–gold); border-color:rgba(255,215,0,.5); font-size:.7rem; }
 .match-time { font-size:.72rem; color:var(–muted); }
 .match-teams { display:flex; align-items:center; gap:8px; margin:10px 0; }
 .team { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; }
@@ -77,12 +76,12 @@
 .actual-score { display:flex; align-items:center; justify-content:center; gap:6px; }
 .winner-chip { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:10px; background:rgba(255,215,0,.07); border:1px solid rgba(255,215,0,.18); border-radius:8px; padding:6px 12px; font-size:.75rem; color:var(–gold); font-weight:500; }
 
-/* PREDICTIONS */
 .participant-selector { display:flex; flex-wrap:wrap; gap:8px; }
 .participant-btn { padding:8px 18px; border-radius:99px; border:2px solid var(–border); background:transparent; color:var(–muted); font-family:‘Oswald’,sans-serif; font-size:.82rem; cursor:pointer; transition:all .2s; font-weight:500; letter-spacing:.5px; }
 .pred-grid-wrap { margin-top:20px; }
 .pred-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:14px; }
 .pred-card { background:var(–card); border:1px solid var(–border); border-radius:12px; padding:16px; }
+.pred-card.final-pred { border-color:var(–gold); box-shadow:0 0 20px rgba(255,215,0,.1); }
 .pred-match-label { font-size:.63rem; color:var(–muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:8px; }
 .pred-teams { display:flex; align-items:center; gap:6px; }
 .pred-team { display:flex; flex-direction:column; align-items:center; gap:3px; flex:1; }
@@ -98,10 +97,11 @@
 .pt-both { background:rgba(0,200,83,.12); color:var(–green); border:1px solid rgba(0,200,83,.28); }
 .pt-none { background:rgba(255,59,48,.08); color:#ff6b6b; border:1px solid rgba(255,59,48,.18); }
 .qf-badge { background:rgba(255,107,53,.1); color:#ff6b35; border:1px solid rgba(255,107,53,.3); font-size:.6rem; padding:2px 7px; border-radius:99px; margin-left:4px; }
+.final-badge { background:rgba(255,215,0,.18); color:var(–gold); border:1px solid rgba(255,215,0,.4); font-size:.6rem; padding:2px 7px; border-radius:99px; margin-left:4px; }
 
-/* ADMIN */
 .admin-note { background:rgba(232,67,147,.07); border:1px solid rgba(232,67,147,.22); border-radius:10px; padding:12px 16px; margin-bottom:24px; font-size:.8rem; color:#f48fb1; }
 .admin-match-card { background:var(–card); border:1px solid var(–border); border-radius:14px; padding:20px; margin-bottom:14px; }
+.admin-match-card.final-admin { border-color:var(–gold); }
 .admin-match-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px; }
 .admin-match-title { font-family:‘Oswald’,sans-serif; font-size:.95rem; font-weight:600; display:flex; align-items:center; gap:8px; }
 .admin-inputs { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
@@ -139,7 +139,7 @@
     <div style="font-size:28px">⚽</div>
     <div class="header-title">
       <h1>CSED WC Qualifier</h1>
-      <p>2026 World Cup · R32 · R16 · QF</p>
+      <p>2026 World Cup · R32 · R16 · QF · SF · Final</p>
     </div>
   </div>
 </header>
@@ -164,6 +164,8 @@
       <button class="lb-toggle-btn active" data-scope="all">Overall</button>
       <button class="lb-toggle-btn" data-scope="from_r16">From R16</button>
       <button class="lb-toggle-btn" data-scope="from_qf">From QF</button>
+      <button class="lb-toggle-btn" data-scope="from_sf">From SF</button>
+      <button class="lb-toggle-btn" data-scope="final_only">Final Only</button>
     </div>
     <div id="lb-container" class="leaderboard-list">
       <div class="loading"><div class="spinner"></div> Loading…</div>
@@ -184,7 +186,7 @@
 
   <div class="page" id="page-admin">
     <div class="section-title">⚙️ Enter Match Results</div>
-    <div class="admin-note">📌 QF scoring: goals correct = 3pts, winner correct = 1.5pts. R32/R16: goals = 2pts, winner = 1pt.</div>
+    <div class="admin-note">📌 Final/3rd: goals=+6, winner=+3, both=+9 · SF: goals=+4, winner=+2 · QF: goals=+3, winner=+1.5 · R32/R16: goals=+2, winner=+1</div>
     <div id="admin-container">
       <div class="loading"><div class="spinner"></div> Loading…</div>
     </div>
@@ -245,28 +247,33 @@ const MATCHES_R32 = [
 ];
 
 const MATCHES_R16 = [
-  { id:'r16_01', t1:'🇨🇦', n1:'Canada',       t2:'🇲🇦', n2:'Morocco',     time:'Jul 4  · FT'      },
-  { id:'r16_02', t1:'🇵🇾', n1:'Paraguay',     t2:'🇫🇷', n2:'France',      time:'Jul 5  · 12:00 AM'},
-  { id:'r16_03', t1:'🇧🇷', n1:'Brazil',       t2:'🇳🇴', n2:'Norway',      time:'Jul 5  · 11:00 PM'},
-  { id:'r16_04', t1:'🇲🇽', n1:'Mexico',       t2:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', n2:'England',     time:'Jul 6  · 3:00 AM' },
-  { id:'r16_05', t1:'🇵🇹', n1:'Portugal',     t2:'🇪🇸', n2:'Spain',       time:'Jul 6  · 10:00 PM'},
-  { id:'r16_06', t1:'🇺🇸', n1:'USA',          t2:'🇧🇪', n2:'Belgium',     time:'Jul 7  · 3:00 AM' },
-  { id:'r16_07', t1:'🇦🇷', n1:'Argentina',    t2:'🇪🇬', n2:'Egypt',       time:'Jul 7  · 7:00 PM' },
-  { id:'r16_08', t1:'🇨🇭', n1:'Switzerland',  t2:'🇨🇴', n2:'Colombia',    time:'Jul 7  · 11:00 PM'},
+  { id:'r16_01', t1:'🇨🇦', n1:'Canada',      t2:'🇲🇦', n2:'Morocco',    time:'Jul 4  · FT'      },
+  { id:'r16_02', t1:'🇵🇾', n1:'Paraguay',    t2:'🇫🇷', n2:'France',     time:'Jul 5  · 12:00 AM'},
+  { id:'r16_03', t1:'🇧🇷', n1:'Brazil',      t2:'🇳🇴', n2:'Norway',     time:'Jul 5  · 11:00 PM'},
+  { id:'r16_04', t1:'🇲🇽', n1:'Mexico',      t2:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', n2:'England',    time:'Jul 6  · 3:00 AM' },
+  { id:'r16_05', t1:'🇵🇹', n1:'Portugal',    t2:'🇪🇸', n2:'Spain',      time:'Jul 6  · 10:00 PM'},
+  { id:'r16_06', t1:'🇺🇸', n1:'USA',         t2:'🇧🇪', n2:'Belgium',    time:'Jul 7  · 3:00 AM' },
+  { id:'r16_07', t1:'🇦🇷', n1:'Argentina',   t2:'🇪🇬', n2:'Egypt',      time:'Jul 7  · 7:00 PM' },
+  { id:'r16_08', t1:'🇨🇭', n1:'Switzerland', t2:'🇨🇴', n2:'Colombia',   time:'Jul 7  · 11:00 PM'},
 ];
 
 const MATCHES_QF = [
-  { id:'qf_01', t1:'🇫🇷', n1:'France',     t2:'🇲🇦', n2:'Morocco',     time:'Jul 9  · FT'      },
-  { id:'qf_02', t1:'🇪🇸', n1:'Spain',      t2:'🇧🇪', n2:'Belgium',     time:'Jul 9  · 22:00'   },
-  { id:'qf_03', t1:'🇳🇴', n1:'Norway',     t2:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', n2:'England',     time:'Jul 12 · 00:00'   },
-  { id:'qf_04', t1:'🇦🇷', n1:'Argentina',  t2:'🇨🇭', n2:'Switzerland', time:'Jul 12 · 04:00'   },
+  { id:'qf_01', t1:'🇫🇷', n1:'France',    t2:'🇲🇦', n2:'Morocco',     time:'Jul 9  · FT'    },
+  { id:'qf_02', t1:'🇪🇸', n1:'Spain',     t2:'🇧🇪', n2:'Belgium',     time:'Jul 9  · 22:00' },
+  { id:'qf_03', t1:'🇳🇴', n1:'Norway',    t2:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', n2:'England',     time:'Jul 12 · 00:00' },
+  { id:'qf_04', t1:'🇦🇷', n1:'Argentina', t2:'🇨🇭', n2:'Switzerland', time:'Jul 12 · 04:00' },
 ];
 
-// R32 predictions
-const MATCHES_FIN = [
-  { id:'fin_01', t1:'🇫🇷', n1:'France',  t2:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', n2:'England',   time:'Jul 19 · 00:00' },
-  { id:'fin_02', t1:'🇪🇸', n1:'Spain',   t2:'🇦🇷', n2:'Argentina', time:'Jul 19 · 22:00' },
+const MATCHES_SF = [
+  { id:'sf_01', t1:'🇫🇷', n1:'France',  t2:'🇪🇸', n2:'Spain',     time:'Jul 14 · FT' },
+  { id:'sf_02', t1:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', n1:'England', t2:'🇦🇷', n2:'Argentina', time:'Jul 15 · FT' },
 ];
+
+const MATCHES_FINAL = [
+  { id:'final_3rd', t1:'🇫🇷', n1:'France',    t2:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', n2:'England',   time:'Jul 19 · 12:00 AM' },
+  { id:'final_1st', t1:'🇪🇸', n1:'Spain',     t2:'🇦🇷', n2:'Argentina', time:'Jul 19 · 10:00 PM' },
+];
+
 const PREDS_R32 = {
   joe:     [{mid:'f05',g1:1,g2:3,w:'Norway'},{mid:'f06',g1:4,g2:1,w:'France'},{mid:'f07',g1:2,g2:0,w:'Mexico'},{mid:'f08',g1:1,g2:0,w:'England'},{mid:'f09',g1:1,g2:2,w:'Senegal'},{mid:'f10',g1:3,g2:1,w:'USA'},{mid:'f11',g1:2,g2:2,w:'Austria'},{mid:'f12',g1:1,g2:1,w:'Portugal'},{mid:'f13',g1:4,g2:2,w:'Switzerland'},{mid:'f14',g1:1,g2:1,w:'Egypt'},{mid:'f15',g1:2,g2:0,w:'Argentina'},{mid:'f16',g1:2,g2:1,w:'Colombia'}],
   omar:    [{mid:'f05',g1:1,g2:3,w:'Norway'},{mid:'f06',g1:3,g2:0,w:'France'},{mid:'f07',g1:1,g2:1,w:'Mexico'},{mid:'f08',g1:2,g2:1,w:'England'},{mid:'f09',g1:0,g2:1,w:'Senegal'},{mid:'f10',g1:3,g2:1,w:'USA'},{mid:'f11',g1:3,g2:0,w:'Spain'},{mid:'f12',g1:2,g2:0,w:'Portugal'},{mid:'f13',g1:1,g2:1,w:'Switzerland'},{mid:'f14',g1:1,g2:2,w:'Egypt'},{mid:'f15',g1:2,g2:0,w:'Argentina'},{mid:'f16',g1:0,g2:0,w:'Ghana'}],
@@ -282,7 +289,6 @@ const PREDS_R32 = {
   safa:    [{mid:'f05',g1:1,g2:2,w:'Norway'},{mid:'f06',g1:3,g2:0,w:'France'},{mid:'f07',g1:1,g2:1,w:'Ecuador'},{mid:'f08',g1:2,g2:1,w:'England'},{mid:'f09',g1:2,g2:2,w:'Senegal'},{mid:'f10',g1:3,g2:1,w:'USA'},{mid:'f11',g1:2,g2:1,w:'Spain'},{mid:'f12',g1:2,g2:1,w:'Portugal'},{mid:'f13',g1:1,g2:2,w:'Algeria'},{mid:'f14',g1:0,g2:2,w:'Egypt'},{mid:'f15',g1:4,g2:1,w:'Argentina'},{mid:'f16',g1:1,g2:1,w:'Colombia'}],
 };
 
-// R16 predictions
 const PREDS_R16 = {
   mento:   [{mid:'r16_01',g1:1,g2:2,w:'Morocco'},{mid:'r16_02',g1:0,g2:2,w:'France'},{mid:'r16_03',g1:1,g2:1,w:'Brazil'},{mid:'r16_04',g1:1,g2:2,w:'England'},{mid:'r16_05',g1:0,g2:1,w:'Spain'},{mid:'r16_06',g1:3,g2:1,w:'USA'},{mid:'r16_07',g1:1,g2:0,w:'Argentina'},{mid:'r16_08',g1:1,g2:2,w:'Colombia'}],
   momen:   [{mid:'r16_01',g1:1,g2:2,w:'Morocco'},{mid:'r16_02',g1:0,g2:2,w:'France'},{mid:'r16_03',g1:3,g2:1,w:'Brazil'},{mid:'r16_04',g1:2,g2:2,w:'England'},{mid:'r16_05',g1:2,g2:2,w:'Portugal'},{mid:'r16_06',g1:2,g2:1,w:'USA'},{mid:'r16_07',g1:0,g2:1,w:'Egypt'},{mid:'r16_08',g1:1,g2:0,w:'Switzerland'}],
@@ -304,7 +310,6 @@ const PREDS_R16 = {
   joe:     [{mid:'r16_01',g1:1,g2:3,w:'Morocco'},{mid:'r16_02',g1:0,g2:2,w:'France'},{mid:'r16_03',g1:3,g2:2,w:'Brazil'},{mid:'r16_04',g1:3,g2:2,w:'Mexico'},{mid:'r16_05',g1:1,g2:2,w:'Spain'},{mid:'r16_06',g1:2,g2:2,w:'USA'},{mid:'r16_07',g1:2,g2:2,w:'Egypt'},{mid:'r16_08',g1:2,g2:1,w:'Switzerland'}],
 };
 
-// QF predictions (goals correct=3pts, winner=1.5pts)
 const PREDS_QF = {
   mento:   [{mid:'qf_01',g1:2,g2:1,w:'France'},{mid:'qf_02',g1:2,g2:0,w:'Spain'},{mid:'qf_03',g1:2,g2:2,w:'Norway'},{mid:'qf_04',g1:2,g2:1,w:'Argentina'}],
   kotb:    [{mid:'qf_01',g1:1,g2:2,w:'Morocco'},{mid:'qf_02',g1:3,g2:1,w:'Spain'},{mid:'qf_03',g1:2,g2:1,w:'Norway'},{mid:'qf_04',g1:3,g2:1,w:'Argentina'}],
@@ -326,162 +331,49 @@ const PREDS_QF = {
   joe:     [{mid:'qf_01',g1:2,g2:2,w:'Morocco'},{mid:'qf_02',g1:3,g2:1,w:'Spain'},{mid:'qf_03',g1:2,g2:1,w:'Norway'},{mid:'qf_04',g1:2,g2:0,w:'Argentina'}],
 };
 
-const MATCHES_SF = [
-  { id:'sf_01', t1:'🇫🇷', n1:'France',  t2:'🇪🇸', n2:'Spain',     time:'Jul 14 · 22:00' },
-  { id:'sf_02', t1:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', n1:'England', t2:'🇦🇷', n2:'Argentina', time:'Jul 15 · 22:00' },
-];
-
-// ─── SF PREDICTIONS (goals=4pts, winner=2pts) ────────────────────────────────
 const PREDS_SF = {
-  mo: [
-    { mid:'sf_01', g1:2, g2:1, w:'France' },
-    { mid:'sf_02', g1:2, g2:1, w:'England' },
-  ],
-  safa: [
-    { mid:'sf_01', g1:2, g2:1, w:'France' },
-    { mid:'sf_02', g1:7, g2:1, w:'England' },
-  ],
-  michael: [
-    { mid:'sf_01', g1:2, g2:1, w:'France' },
-    { mid:'sf_02', g1:2, g2:3, w:'Argentina' },
-  ],
-  bazina: [
-    { mid:'sf_01', g1:3, g2:1, w:'France' },
-    { mid:'sf_02', g1:2, g2:1, w:'England' },
-  ],
-  kotb: [
-    { mid:'sf_01', g1:2, g2:2, w:'Spain' },
-    { mid:'sf_02', g1:2, g2:0, w:'England' },
-  ],
-  loulou: [
-    { mid:'sf_01', g1:3, g2:1, w:'France' },
-    { mid:'sf_02', g1:2, g2:1, w:'England' },
-  ],
-  tony: [
-    { mid:'sf_01', g1:2, g2:1, w:'France' },
-    { mid:'sf_02', g1:1, g2:3, w:'Argentina' },
-  ],
-  ibbo: [
-    { mid:'sf_01', g1:3, g2:1, w:'Spain' },
-    { mid:'sf_02', g1:2, g2:0, w:'England' },
-  ],
-  momen: [
-    { mid:'sf_01', g1:3, g2:1, w:'France' },
-    { mid:'sf_02', g1:1, g2:2, w:'Argentina' },
-  ],
-  aboaeid: [
-    { mid:'sf_01', g1:2, g2:2, w:'Spain' },
-    { mid:'sf_02', g1:1, g2:2, w:'Argentina' },
-  ],
-  mento: [
-    { mid:'sf_01', g1:1, g2:2, w:'Spain' },
-    { mid:'sf_02', g1:2, g2:2, w:'Argentina' },
-  ],
-  omar: [
-    { mid:'sf_01', g1:0, g2:1, w:'Spain' },
-    { mid:'sf_02', g1:3, g2:1, w:'England' },
-  ],
-  ziad: [
-    { mid:'sf_01', g1:2, g2:0, w:'France' },
-    { mid:'sf_02', g1:2, g2:1, w:'England' },
-  ],
-  amo3: [
-    { mid:'sf_01', g1:2, g2:0, w:'France' },
-    { mid:'sf_02', g1:2, g2:1, w:'England' },
-  ],
-  farrag: [
-    { mid:'sf_01', g1:3, g2:1, w:'France' },
-    { mid:'sf_02', g1:2, g2:1, w:'England' },
-  ],
-  deffo: [
-    { mid:'sf_01', g1:3, g2:1, w:'France' },
-    { mid:'sf_02', g1:3, g2:2, w:'England' },
-  ],
-  salama: [
-    { mid:'sf_01', g1:2, g2:1, w:'France' },
-    { mid:'sf_02', g1:2, g2:1, w:'England' },
-  ],
-  joe: [
-    { mid:'sf_01', g1:2, g2:1, w:'France' },
-    { mid:'sf_02', g1:2, g2:3, w:'Argentina' },
-  ],
+  mo:      [{mid:'sf_01',g1:2,g2:1,w:'France'},{mid:'sf_02',g1:2,g2:1,w:'England'}],
+  safa:    [{mid:'sf_01',g1:2,g2:1,w:'France'},{mid:'sf_02',g1:7,g2:1,w:'England'}],
+  michael: [{mid:'sf_01',g1:2,g2:1,w:'France'},{mid:'sf_02',g1:2,g2:3,w:'Argentina'}],
+  bazina:  [{mid:'sf_01',g1:3,g2:1,w:'France'},{mid:'sf_02',g1:2,g2:1,w:'England'}],
+  kotb:    [{mid:'sf_01',g1:2,g2:2,w:'Spain'},{mid:'sf_02',g1:2,g2:0,w:'England'}],
+  loulou:  [{mid:'sf_01',g1:3,g2:1,w:'France'},{mid:'sf_02',g1:2,g2:1,w:'England'}],
+  tony:    [{mid:'sf_01',g1:2,g2:1,w:'France'},{mid:'sf_02',g1:1,g2:3,w:'Argentina'}],
+  ibbo:    [{mid:'sf_01',g1:3,g2:1,w:'Spain'},{mid:'sf_02',g1:2,g2:0,w:'England'}],
+  momen:   [{mid:'sf_01',g1:3,g2:1,w:'France'},{mid:'sf_02',g1:1,g2:2,w:'Argentina'}],
+  aboaeid: [{mid:'sf_01',g1:2,g2:2,w:'Spain'},{mid:'sf_02',g1:1,g2:2,w:'Argentina'}],
+  mento:   [{mid:'sf_01',g1:1,g2:2,w:'Spain'},{mid:'sf_02',g1:2,g2:2,w:'Argentina'}],
+  omar:    [{mid:'sf_01',g1:0,g2:1,w:'Spain'},{mid:'sf_02',g1:3,g2:1,w:'England'}],
+  ziad:    [{mid:'sf_01',g1:2,g2:0,w:'France'},{mid:'sf_02',g1:2,g2:1,w:'England'}],
+  amo3:    [{mid:'sf_01',g1:2,g2:0,w:'France'},{mid:'sf_02',g1:2,g2:1,w:'England'}],
+  farrag:  [{mid:'sf_01',g1:3,g2:1,w:'France'},{mid:'sf_02',g1:2,g2:1,w:'England'}],
+  deffo:   [{mid:'sf_01',g1:3,g2:1,w:'France'},{mid:'sf_02',g1:3,g2:2,w:'England'}],
+  salama:  [{mid:'sf_01',g1:2,g2:1,w:'France'},{mid:'sf_02',g1:2,g2:1,w:'England'}],
+  joe:     [{mid:'sf_01',g1:2,g2:1,w:'France'},{mid:'sf_02',g1:2,g2:3,w:'Argentina'}],
 };
 
-const PREDS_FIN = {
-  momen: [
-    { mid:'fin_01', g1:2, g2:0, w:'France' },
-    { mid:'fin_02', g1:2, g2:3, w:'Argentina' },
-  ],
-  kotb: [
-    { mid:'fin_01', g1:2, g2:1, w:'France' },
-    { mid:'fin_02', g1:3, g2:2, w:'Spain' },
-  ],
-  mo: [
-    { mid:'fin_01', g1:2, g2:1, w:'France' },
-    { mid:'fin_02', g1:2, g2:2, w:'Spain' },
-  ],
-  omar: [
-    { mid:'fin_01', g1:3, g2:1, w:'France' },
-    { mid:'fin_02', g1:2, g2:0, w:'Spain' },
-  ],
-  safa: [
-    { mid:'fin_01', g1:2, g2:1, w:'France' },
-    { mid:'fin_02', g1:2, g2:2, w:'Spain' },
-  ],
-  tony: [
-    { mid:'fin_01', g1:1, g2:2, w:'England' },
-    { mid:'fin_02', g1:1, g2:1, w:'Argentina' },
-  ],
-  farrag: [
-    { mid:'fin_01', g1:2, g2:1, w:'France' },
-    { mid:'fin_02', g1:2, g2:3, w:'Argentina' },
-  ],
-  ibbo: [
-    { mid:'fin_01', g1:3, g2:1, w:'France' },
-    { mid:'fin_02', g1:3, g2:1, w:'Spain' },
-  ],
-  aboaeid: [
-    { mid:'fin_01', g1:3, g2:2, w:'France' },
-    { mid:'fin_02', g1:1, g2:2, w:'Argentina' },
-  ],
-  ziad: [
-    { mid:'fin_01', g1:1, g2:1, w:'France' },
-    { mid:'fin_02', g1:2, g2:1, w:'Spain' },
-  ],
-  michael: [
-    { mid:'fin_01', g1:2, g2:1, w:'France' },
-    { mid:'fin_02', g1:1, g2:2, w:'Argentina' },
-  ],
-  amo3: [
-    { mid:'fin_02', g1:2, g2:2, w:'Argentina' },
-  ],
-  loulou: [
-    { mid:'fin_01', g1:2, g2:1, w:'France' },
-    { mid:'fin_02', g1:2, g2:1, w:'Spain' },
-  ],
-  mento: [
-    { mid:'fin_01', g1:2, g2:0, w:'France' },
-    { mid:'fin_02', g1:2, g2:1, w:'Spain' },
-  ],
-  bazina: [
-    { mid:'fin_01', g1:2, g2:1, w:'France' },
-    { mid:'fin_02', g1:3, g2:1, w:'Spain' },
-  ],
-  deffo: [
-    { mid:'fin_01', g1:2, g2:1, w:'France' },
-    { mid:'fin_02', g1:2, g2:1, w:'Spain' },
-  ],
-  salama: [
-    { mid:'fin_01', g1:2, g2:0, w:'France' },
-    { mid:'fin_02', g1:1, g2:0, w:'Spain' },
-  ],
-  joe: [
-    { mid:'fin_01', g1:2, g2:1, w:'France' },
-    { mid:'fin_02', g1:2, g2:3, w:'Argentina' },
-  ],
+// FINAL PREDICTIONS (goals=6pts, winner=3pts, both=9pts)
+const PREDS_FINAL = {
+  momen:   [{mid:'final_3rd',g1:2,g2:0,w:'France'},{mid:'final_1st',g1:2,g2:3,w:'Argentina'}],
+  kotb:    [{mid:'final_3rd',g1:2,g2:1,w:'France'},{mid:'final_1st',g1:3,g2:2,w:'Spain'}],
+  mo:      [{mid:'final_3rd',g1:2,g2:1,w:'France'},{mid:'final_1st',g1:2,g2:2,w:'Spain'}],
+  omar:    [{mid:'final_3rd',g1:3,g2:1,w:'France'},{mid:'final_1st',g1:2,g2:0,w:'Spain'}],
+  safa:    [{mid:'final_3rd',g1:2,g2:1,w:'France'},{mid:'final_1st',g1:2,g2:2,w:'Spain'}],
+  tony:    [{mid:'final_3rd',g1:1,g2:2,w:'England'},{mid:'final_1st',g1:1,g2:1,w:'Argentina'}],
+  farrag:  [{mid:'final_3rd',g1:2,g2:1,w:'France'},{mid:'final_1st',g1:2,g2:3,w:'Argentina'}],
+  ibbo:    [{mid:'final_3rd',g1:3,g2:1,w:'France'},{mid:'final_1st',g1:3,g2:1,w:'Spain'}],
+  aboaeid: [{mid:'final_3rd',g1:3,g2:2,w:'France'},{mid:'final_1st',g1:1,g2:2,w:'Argentina'}],
+  ziad:    [{mid:'final_3rd',g1:1,g2:1,w:'France'},{mid:'final_1st',g1:2,g2:1,w:'Spain'}],
+  michael: [{mid:'final_3rd',g1:2,g2:1,w:'France'},{mid:'final_1st',g1:1,g2:2,w:'Argentina'}],
+  amo3:    [{mid:'final_3rd',g1:2,g2:0,w:'France'},{mid:'final_1st',g1:2,g2:2,w:'Argentina'}],
+  loulou:  [{mid:'final_3rd',g1:2,g2:1,w:'France'},{mid:'final_1st',g1:2,g2:1,w:'Spain'}],
+  mento:   [{mid:'final_3rd',g1:2,g2:0,w:'France'},{mid:'final_1st',g1:2,g2:1,w:'Spain'}],
+  bazina:  [{mid:'final_3rd',g1:2,g2:1,w:'France'},{mid:'final_1st',g1:3,g2:1,w:'Spain'}],
+  deffo:   [{mid:'final_3rd',g1:2,g2:1,w:'France'},{mid:'final_1st',g1:2,g2:1,w:'Spain'}],
+  salama:  [{mid:'final_3rd',g1:2,g2:0,w:'France'},{mid:'final_1st',g1:1,g2:0,w:'Spain'}],
+  joe:     [{mid:'final_3rd',g1:1,g2:0,w:'England'},{mid:'final_1st',g1:2,g2:2,w:'Spain'}],
 };
 
-// ─── STATE ────────────────────────────────────────────────────────────────────
 let actuals = {};
 let selectedPid = 'joe';
 let lbScope = 'all';
@@ -492,46 +384,42 @@ onValue(actualsRef, snap => {
   renderAll();
 });
 
-// ─── SCORING ─────────────────────────────────────────────────────────────────
+function getPts(mid) {
+  if (mid.startsWith('final_')) return { g:6, w:3 };
+  if (mid.startsWith('sf_'))    return { g:4, w:2 };
+  if (mid.startsWith('qf_'))    return { g:3, w:1.5 };
+  return { g:2, w:1 };
+}
+
 function calcPoints(pid, scope) {
   let goals = 0, winner = 0;
   let preds = [];
-  if (scope === 'from_r16')     preds = [...(PREDS_R16[pid]||[]), ...(PREDS_QF[pid]||[]), ...(PREDS_SF[pid]||[]), ...(PREDS_FIN[pid]||[])];
-  else if (scope === 'from_qf') preds = [...(PREDS_QF[pid]||[]), ...(PREDS_SF[pid]||[]), ...(PREDS_FIN[pid]||[])];
-  else                          preds = [...(PREDS_R32[pid]||[]), ...(PREDS_R16[pid]||[]), ...(PREDS_QF[pid]||[]), ...(PREDS_SF[pid]||[]), ...(PREDS_FIN[pid]||[])];
+  if (scope === 'final_only') preds = [...(PREDS_FINAL[pid]||[])];
+  else if (scope === 'from_sf') preds = [...(PREDS_SF[pid]||[]),...(PREDS_FINAL[pid]||[])];
+  else if (scope === 'from_qf') preds = [...(PREDS_QF[pid]||[]),...(PREDS_SF[pid]||[]),...(PREDS_FINAL[pid]||[])];
+  else if (scope === 'from_r16') preds = [...(PREDS_R16[pid]||[]),...(PREDS_QF[pid]||[]),...(PREDS_SF[pid]||[]),...(PREDS_FINAL[pid]||[])];
+  else preds = [...(PREDS_R32[pid]||[]),...(PREDS_R16[pid]||[]),...(PREDS_QF[pid]||[]),...(PREDS_SF[pid]||[]),...(PREDS_FINAL[pid]||[])];
   for (const pred of preds) {
     const act = actuals[pred.mid];
     if (!act || act.g1 === undefined) continue;
-    const isQF = pred.mid.startsWith('qf_');
-    const isSF = pred.mid.startsWith('sf_');
-    const isFIN = pred.mid.startsWith('fin_');
-    const gPts = isFIN ? 6 : isSF ? 4 : isQF ? 3 : 2;
-    const wPts = isFIN ? 3 : isSF ? 2 : isQF ? 1.5 : 1;
-    if (act.g1 === pred.g1 && act.g2 === pred.g2) goals += gPts;
-    if (act.winner && act.winner === pred.w) winner += wPts;
+    const pts = getPts(pred.mid);
+    if (act.g1 === pred.g1 && act.g2 === pred.g2) goals += pts.g;
+    if (act.winner && act.winner === pred.w) winner += pts.w;
   }
   return { goals, winner, total: goals + winner };
 }
 
 function matchPoints(pid, mid) {
-  const pred = (PREDS_R32[pid]||[]).find(p=>p.mid===mid)
-            || (PREDS_R16[pid]||[]).find(p=>p.mid===mid)
-            || (PREDS_QF[pid]||[]).find(p=>p.mid===mid)
-            || (PREDS_SF[pid]||[]).find(p=>p.mid===mid)
-            || (PREDS_FIN[pid]||[]).find(p=>p.mid===mid);
+  const allPreds = [...(PREDS_R32[pid]||[]),...(PREDS_R16[pid]||[]),...(PREDS_QF[pid]||[]),...(PREDS_SF[pid]||[]),...(PREDS_FINAL[pid]||[])];
+  const pred = allPreds.find(p => p.mid === mid);
   const act = actuals[mid];
   if (!pred || !act || act.g1 === undefined) return null;
-  const isQF = mid.startsWith('qf_');
-  const isSF = mid.startsWith('sf_');
-  const isFIN = mid.startsWith('fin_');
-  const gPts = isFIN ? 6 : isSF ? 4 : isQF ? 3 : 2;
-  const wPts = isFIN ? 3 : isSF ? 2 : isQF ? 1.5 : 1;
+  const pts = getPts(mid);
   const g = act.g1===pred.g1 && act.g2===pred.g2;
   const w = !!(act.winner && act.winner===pred.w);
-  return { goals:g, winner:w, gPts, wPts };
+  return { goals:g, winner:w, gPts:pts.g, wPts:pts.w };
 }
 
-// ─── RENDER ───────────────────────────────────────────────────────────────────
 function renderAll() {
   renderLeaderboard();
   renderMatches();
@@ -540,18 +428,27 @@ function renderAll() {
 }
 
 function renderLeaderboard() {
-  const eligible = lbScope === 'from_r16'
-    ? PARTICIPANTS.filter(p => PREDS_R16[p.id] || PREDS_QF[p.id])
+  const eligible = lbScope === 'final_only'
+    ? PARTICIPANTS.filter(p => PREDS_FINAL[p.id])
+    : lbScope === 'from_sf'
+    ? PARTICIPANTS.filter(p => PREDS_SF[p.id] || PREDS_FINAL[p.id])
     : lbScope === 'from_qf'
     ? PARTICIPANTS.filter(p => PREDS_QF[p.id])
+    : lbScope === 'from_r16'
+    ? PARTICIPANTS.filter(p => PREDS_R16[p.id] || PREDS_QF[p.id])
     : PARTICIPANTS;
 
   const scored = eligible.map(p => ({...p, ...calcPoints(p.id, lbScope)}))
     .sort((a,b) => b.total - a.total || b.goals - a.goals);
 
-  const maxPossible = lbScope === 'from_qf' ? MATCHES_QF.length*4.5
-    : lbScope === 'from_r16' ? MATCHES_R16.length*3 + MATCHES_QF.length*4.5 + MATCHES_SF.length*6 + MATCHES_FIN.length*9
-    : (MATCHES_R32.length + MATCHES_R16.length)*3 + MATCHES_QF.length*4.5 + MATCHES_SF.length*6 + MATCHES_FIN.length*9;
+  const allMatches = [...MATCHES_R32,...MATCHES_R16,...MATCHES_QF,...MATCHES_SF,...MATCHES_FINAL];
+  const maxPts = (mid) => { const p = getPts(mid); return p.g + p.w; };
+  let maxPossible = 0;
+  if (lbScope === 'final_only') maxPossible = MATCHES_FINAL.reduce((s,m)=>s+maxPts(m.id),0);
+  else if (lbScope === 'from_sf') maxPossible = [...MATCHES_SF,...MATCHES_FINAL].reduce((s,m)=>s+maxPts(m.id),0);
+  else if (lbScope === 'from_qf') maxPossible = [...MATCHES_QF,...MATCHES_SF,...MATCHES_FINAL].reduce((s,m)=>s+maxPts(m.id),0);
+  else if (lbScope === 'from_r16') maxPossible = [...MATCHES_R16,...MATCHES_QF,...MATCHES_SF,...MATCHES_FINAL].reduce((s,m)=>s+maxPts(m.id),0);
+  else maxPossible = allMatches.reduce((s,m)=>s+maxPts(m.id),0);
 
   const rankEmoji = ['🥇','🥈','🥉'];
   const rankCls = ['r1','r2','r3'];
@@ -582,10 +479,10 @@ function sortedList(list) {
   return [...unsaved, ...saved];
 }
 
-function matchCardHTML(m, roundLabel, roundCls) {
+function matchCardHTML(m, roundLabel, roundCls, isFinal) {
   const act = actuals[m.id];
   const has = act && act.g1 !== undefined;
-  return '<div class="match-card">'
+  return '<div class="match-card '+(isFinal?'final-card':'')+'">'
     +'<div class="match-meta">'
     +'<span class="match-round '+roundCls+'">'+roundLabel+'</span>'
     +'<span class="match-time">🕐 '+m.time+'</span>'
@@ -600,17 +497,21 @@ function matchCardHTML(m, roundLabel, roundCls) {
     +'<div class="team"><div class="team-flag">'+m.t2+'</div><div class="team-name">'+m.n2+'</div></div>'
     +'</div>'
     +(has
-      ? '<div class="winner-chip">🚀 Advances: '+act.winner+'</div>'
+      ? '<div class="winner-chip">🚀 '+( m.id==='final_1st'?'🏆 Champion':'Advances')+': '+act.winner+'</div>'
       : '<div class="winner-chip" style="opacity:.35">⏳ Awaiting result</div>')
     +'</div>';
 }
 
 function renderMatches() {
-  const qfHtml  = sortedList(MATCHES_QF).map(m=>matchCardHTML(m,'1/4 · QF','qf')).join('');
-  const r16Html = sortedList(MATCHES_R16).map(m=>matchCardHTML(m,'1/16 · R16','r16')).join('');
-  const r32Html = sortedList(MATCHES_R32).map(m=>matchCardHTML(m,'1/32 · R32','')).join('');
+  const finalHtml = sortedList(MATCHES_FINAL).map(m => matchCardHTML(m, m.id==='final_1st'?'🏆 FINAL':'3rd Place', m.id==='final_1st'?'final':'sf', true)).join('');
+  const sfHtml    = sortedList(MATCHES_SF).map(m=>matchCardHTML(m,'SF','sf',false)).join('');
+  const qfHtml    = sortedList(MATCHES_QF).map(m=>matchCardHTML(m,'1/4 · QF','qf',false)).join('');
+  const r16Html   = sortedList(MATCHES_R16).map(m=>matchCardHTML(m,'1/16 · R16','r16',false)).join('');
+  const r32Html   = sortedList(MATCHES_R32).map(m=>matchCardHTML(m,'1/32 · R32','',false)).join('');
   document.getElementById('matches-container').innerHTML =
-    '<div class="matches-group"><div class="matches-subheader qf">🏆 Quarter Finals <span style="font-size:.7rem;color:#ff9060;font-family:Inter">(goals 3pts · winner 1.5pts)</span></div><div class="matches-grid">'+qfHtml+'</div></div>'
+    '<div class="matches-group"><div class="matches-subheader final">🏆 Finals <span style="font-size:.7rem;color:#ffd700aa;font-family:Inter">(goals +6 · winner +3 · both +9)</span></div><div class="matches-grid">'+finalHtml+'</div></div>'
+    +'<div class="matches-group"><div class="matches-subheader sf">🔥 Semi Finals <span style="font-size:.7rem;color:#ff3d7faa;font-family:Inter">(goals +4 · winner +2)</span></div><div class="matches-grid">'+sfHtml+'</div></div>'
+    +'<div class="matches-group"><div class="matches-subheader qf">⚡ Quarter Finals <span style="font-size:.7rem;color:#ff6b35aa;font-family:Inter">(goals +3 · winner +1.5)</span></div><div class="matches-grid">'+qfHtml+'</div></div>'
     +'<div class="matches-group"><div class="matches-subheader r16">⚔️ Round of 16</div><div class="matches-grid">'+r16Html+'</div></div>'
     +'<div class="matches-group"><div class="matches-subheader">📋 Round of 32</div><div class="matches-grid">'+r32Html+'</div></div>';
 }
@@ -626,11 +527,10 @@ function renderParticipantSelector() {
   );
 }
 
-function predCardHTML(pred, roundLabel, roundCls) {
-  const m = [...MATCHES_R32,...MATCHES_R16,...MATCHES_QF,...MATCHES_SF,...MATCHES_FIN].find(x=>x.id===pred.mid);
+function predCardHTML(pred, roundLabel, roundCls, isFinal) {
+  const m = [...MATCHES_R32,...MATCHES_R16,...MATCHES_QF,...MATCHES_SF,...MATCHES_FINAL].find(x=>x.id===pred.mid);
   const p = PARTICIPANTS.find(x=>x.id===selectedPid);
   const pts = matchPoints(selectedPid, pred.mid);
-  const isQF = pred.mid.startsWith('qf_');
   let badge = '';
   if (pts) {
     if (pts.goals && pts.winner) badge = '<span class="pt-chip pt-both">+'+(pts.gPts+pts.wPts)+' ✅</span>';
@@ -638,8 +538,9 @@ function predCardHTML(pred, roundLabel, roundCls) {
     else if (pts.winner)         badge = '<span class="pt-chip pt-winner">+'+pts.wPts+' 🏆</span>';
     else                         badge = '<span class="pt-chip pt-none">0 ❌</span>';
   }
-  return '<div class="pred-card">'
-    +'<div class="pred-match-label">'+roundLabel+(isQF?' <span class="qf-badge">1.5x</span>':'')+' · '+m.time+'</div>'
+  const extraBadge = isFinal ? '<span class="final-badge">x3</span>' : pred.mid.startsWith('qf_') ? '<span class="qf-badge">1.5x</span>' : '';
+  return '<div class="pred-card '+(isFinal?'final-pred':'')+'">'
+    +'<div class="pred-match-label">'+roundLabel+extraBadge+' · '+m.time+'</div>'
     +'<div class="pred-teams">'
     +'<div class="pred-team"><div class="pred-flag">'+m.t1+'</div><div class="pred-name">'+m.n1+'</div></div>'
     +'<div class="pred-score" style="color:'+p.color+'">'+pred.g1+'</div>'
@@ -654,24 +555,23 @@ function predCardHTML(pred, roundLabel, roundCls) {
 
 function renderPredictions() {
   renderParticipantSelector();
-  const finPreds = sortedList(MATCHES_FIN).map(m=>(PREDS_FIN[selectedPid]||[]).find(p=>p.mid===m.id)).filter(Boolean);
-  const sfPreds  = sortedList(MATCHES_SF).map(m=>(PREDS_SF[selectedPid]||[]).find(p=>p.mid===m.id)).filter(Boolean);
-  const qfPreds  = sortedList(MATCHES_QF).map(m=>(PREDS_QF[selectedPid]||[]).find(p=>p.mid===m.id)).filter(Boolean);
-  const r16Preds = sortedList(MATCHES_R16).map(m=>(PREDS_R16[selectedPid]||[]).find(p=>p.mid===m.id)).filter(Boolean);
-  const r32Preds = sortedList(MATCHES_R32).map(m=>(PREDS_R32[selectedPid]||[]).find(p=>p.mid===m.id)).filter(Boolean);
+  const finalPreds = sortedList(MATCHES_FINAL).map(m=>(PREDS_FINAL[selectedPid]||[]).find(p=>p.mid===m.id)).filter(Boolean);
+  const sfPreds    = sortedList(MATCHES_SF).map(m=>(PREDS_SF[selectedPid]||[]).find(p=>p.mid===m.id)).filter(Boolean);
+  const qfPreds    = sortedList(MATCHES_QF).map(m=>(PREDS_QF[selectedPid]||[]).find(p=>p.mid===m.id)).filter(Boolean);
+  const r16Preds   = sortedList(MATCHES_R16).map(m=>(PREDS_R16[selectedPid]||[]).find(p=>p.mid===m.id)).filter(Boolean);
+  const r32Preds   = sortedList(MATCHES_R32).map(m=>(PREDS_R32[selectedPid]||[]).find(p=>p.mid===m.id)).filter(Boolean);
   const noMsg = '<span style="color:var(--muted);font-size:.8rem">No predictions submitted.</span>';
   document.getElementById('pred-container').innerHTML =
-    '<div class="matches-group"><div class="matches-subheader fin">🏆 Finals <span style="font-size:.7rem;color:#ffd700">(goals 6pts · winner 3pts)</span></div><div class="matches-grid">'+finHtml+'</div></div>'
-    +'<div class="matches-group"><div class="matches-subheader fin">🏆 Finals 🏆</div><div class="pred-grid">'+(finPreds.map(p=>predCardHTML(p,'FIN','fin')).join('')||noMsg)+'</div></div>'
-    +'<div class="matches-group"><div class="matches-subheader sf">🔥 Semi Finals</div><div class="pred-grid">'+(sfPreds.map(p=>predCardHTML(p,'SF','sf')).join('')||noMsg)+'</div></div>'
-    +'<div class="matches-group"><div class="matches-subheader qf">🏆 Quarter Finals</div><div class="pred-grid">'+(qfPreds.map(p=>predCardHTML(p,'QF','qf')).join('')||noMsg)+'</div></div>'
-    +'<div class="matches-group"><div class="matches-subheader r16">⚔️ Round of 16</div><div class="pred-grid">'+(r16Preds.map(p=>predCardHTML(p,'R16','r16')).join('')||noMsg)+'</div></div>'
-    +'<div class="matches-group"><div class="matches-subheader">📋 Round of 32</div><div class="pred-grid">'+(r32Preds.map(p=>predCardHTML(p,'R32','')).join('')||noMsg)+'</div></div>';
+    '<div class="matches-group"><div class="matches-subheader final">🏆 Finals</div><div class="pred-grid">'+(finalPreds.map(p=>predCardHTML(p,p.mid==='final_1st'?'FINAL':'3rd Place',p.mid==='final_1st'?'final':'sf',true)).join('')||noMsg)+'</div></div>'
+    +'<div class="matches-group"><div class="matches-subheader sf">🔥 Semi Finals</div><div class="pred-grid">'+(sfPreds.map(p=>predCardHTML(p,'SF','sf',false)).join('')||noMsg)+'</div></div>'
+    +'<div class="matches-group"><div class="matches-subheader qf">⚡ Quarter Finals</div><div class="pred-grid">'+(qfPreds.map(p=>predCardHTML(p,'QF','qf',false)).join('')||noMsg)+'</div></div>'
+    +'<div class="matches-group"><div class="matches-subheader r16">⚔️ Round of 16</div><div class="pred-grid">'+(r16Preds.map(p=>predCardHTML(p,'R16','r16',false)).join('')||noMsg)+'</div></div>'
+    +'<div class="matches-group"><div class="matches-subheader">📋 Round of 32</div><div class="pred-grid">'+(r32Preds.map(p=>predCardHTML(p,'R32','',false)).join('')||noMsg)+'</div></div>';
 }
 
-function adminCardHTML(m, roundLabel, roundCls) {
+function adminCardHTML(m, roundLabel, roundCls, isFinal) {
   const act = actuals[m.id] || {};
-  return '<div class="admin-match-card">'
+  return '<div class="admin-match-card '+(isFinal?'final-admin':'')+'">'
     +'<div class="admin-match-header">'
     +'<div class="admin-match-title"><span class="match-round '+roundCls+'">'+roundLabel+'</span>'+m.t1+' '+m.n1+' vs '+m.n2+' '+m.t2+'</div>'
     +'<span class="match-time">🕐 '+m.time+'</span>'
@@ -685,7 +585,7 @@ function adminCardHTML(m, roundLabel, roundCls) {
     +'<input type="number" class="score-input" id="a_'+m.id+'_g2" min="0" max="20" value="'+(act.g2!==undefined?act.g2:'')+'" placeholder="–"/>'
     +'<div class="admin-team-label">'+m.n2+'</div></div>'
     +'<div style="display:flex;flex-direction:column;gap:6px">'
-    +'<div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px">🚀 Advances</div>'
+    +'<div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px">'+(isFinal && m.id==='final_1st'?'🏆 Champion':'🚀 Advances')+'</div>'
     +'<select class="winner-select" id="a_'+m.id+'_w">'
     +'<option value="">-- Select --</option>'
     +'<option value="'+m.n1+'" '+(act.winner===m.n1?'selected':'')+'>'+m.t1+' '+m.n1+'</option>'
@@ -699,16 +599,15 @@ function adminCardHTML(m, roundLabel, roundCls) {
 }
 
 function renderAdmin() {
-  const finHtml = sortedList(MATCHES_FIN).map(m=>adminCardHTML(m,'FINAL','fin')).join('');
-  const sfHtml  = sortedList(MATCHES_SF).map(m=>adminCardHTML(m,'SF','sf')).join('');
-  const qfHtml  = sortedList(MATCHES_QF).map(m=>adminCardHTML(m,'1/4 · QF','qf')).join('');
-  const r16Html = sortedList(MATCHES_R16).map(m=>adminCardHTML(m,'1/16 · R16','r16')).join('');
-  const r32Html = sortedList(MATCHES_R32).map(m=>adminCardHTML(m,'1/32 · R32','')).join('');
+  const finalHtml = sortedList(MATCHES_FINAL).map(m=>adminCardHTML(m,m.id==='final_1st'?'🏆 FINAL':'3rd Place',m.id==='final_1st'?'final':'sf',true)).join('');
+  const sfHtml    = sortedList(MATCHES_SF).map(m=>adminCardHTML(m,'SF','sf',false)).join('');
+  const qfHtml    = sortedList(MATCHES_QF).map(m=>adminCardHTML(m,'1/4 · QF','qf',false)).join('');
+  const r16Html   = sortedList(MATCHES_R16).map(m=>adminCardHTML(m,'1/16 · R16','r16',false)).join('');
+  const r32Html   = sortedList(MATCHES_R32).map(m=>adminCardHTML(m,'1/32 · R32','',false)).join('');
   document.getElementById('admin-container').innerHTML =
-    '<div class="matches-group"><div class="matches-subheader fin">🏆 Finals <span style="font-size:.7rem;color:#ffd700">(goals 6pts · winner 3pts)</span></div><div class="matches-grid">'+finHtml+'</div></div>'
-    +'<div class="matches-group"><div class="matches-subheader fin">🏆 Finals</div>'+finHtml+'</div>'
+    '<div class="matches-group"><div class="matches-subheader final">🏆 Finals</div>'+finalHtml+'</div>'
     +'<div class="matches-group"><div class="matches-subheader sf">🔥 Semi Finals</div>'+sfHtml+'</div>'
-    +'<div class="matches-group"><div class="matches-subheader qf">🏆 Quarter Finals</div>'+qfHtml+'</div>'
+    +'<div class="matches-group"><div class="matches-subheader qf">⚡ Quarter Finals</div>'+qfHtml+'</div>'
     +'<div class="matches-group"><div class="matches-subheader r16">⚔️ Round of 16</div>'+r16Html+'</div>'
     +'<div class="matches-group"><div class="matches-subheader">📋 Round of 32</div>'+r32Html+'</div>';
 }
@@ -725,10 +624,8 @@ window.saveMatch = async function(mid) {
 };
 
 window.resetMatch = async function(mid) {
-  const m = [...MATCHES_R32,...MATCHES_R16,...MATCHES_QF,...MATCHES_SF,...MATCHES_FIN].find(x=>x.id===mid);
+  const m = [...MATCHES_R32,...MATCHES_R16,...MATCHES_QF,...MATCHES_SF,...MATCHES_FINAL].find(x=>x.id===mid);
   if (!confirm('Reset result for '+m.n1+' vs '+m.n2+'?')) return;
-  const btn = document.getElementById('rst_'+mid);
-  if (btn) { btn.disabled=true; btn.textContent='Resetting…'; }
   await remove(ref(db,'csed_actuals/'+mid));
 };
 
